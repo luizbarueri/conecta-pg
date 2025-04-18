@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>CRUD Estoque</title>
+</head>
+<body>
+  <h1>📦 Estoque de Produtos</h1>
+
+  <h2>➕ Adicionar Produto</h2>
+  <form id="formProduto">
+    <input type="number" id="id" placeholder="ID" required>
+    <input type="text" id="produto" placeholder="Produto" required>
+    <input type="number" id="valor" placeholder="Valor" step="0.01" required>
+    <input type="number" id="qtd" placeholder="Qtd" required>
+    <button type="submit">Adicionar</button>
+  </form>
+
+  <h2>📋 Lista de Produtos</h2>
+  <button onclick="carregarProdutos()">🔄 Atualizar Lista</button>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Produto</th>
+        <th>Valor</th>
+        <th>Qtd</th>
+        <th>Total</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody id="tabelaProdutos"></tbody>
+  </table>
+
+  <script>
+    async function carregarProdutos() {
+      const res = await fetch('/produtos');
+      const produtos = await res.json();
+      const tabela = document.getElementById('tabelaProdutos');
+      tabela.innerHTML = '';
+      produtos.forEach(p => {
+        tabela.innerHTML += `
+          <tr>
+            <td>${p.id}</td>
+            <td>${p.produto}</td>
+            <td>${p.valor}</td>
+            <td>${p.qtd}</td>
+            <td>${p.total}</td>
+            <td>
+              <button onclick="deletarProduto(${p.id})">🗑️</button>
+              <button onclick="editarProduto(${p.id}, '${p.produto}', ${p.valor}, ${p.qtd})">✏️</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    // ➕ Adicionar produto
+    document.getElementById('formProduto').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = +document.getElementById('id').value;
+      const produto = document.getElementById('produto').value;
+      const valor = +document.getElementById('valor').value;
+      const qtd = +document.getElementById('qtd').value;
+
+      await fetch('/produtos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, produto, valor, qtd })
+      });
+
+      carregarProdutos();
+      e.target.reset();
+    });
+
+    // 🗑️ Deletar
+    async function deletarProduto(id) {
+      await fetch(`/produtos/${id}`, { method: 'DELETE' });
+      carregarProdutos();
+    }
+
+    // ✏️ Editar
+    async function editarProduto(id, produto, valor, qtd) {
+      const novoProduto = prompt('Novo nome:', produto);
+      const novoValor = parseFloat(prompt('Novo valor:', valor));
+      const novaQtd = parseInt(prompt('Nova quantidade:', qtd));
+
+      if (novoProduto && !isNaN(novoValor) && !isNaN(novaQtd)) {
+        await fetch(`/produtos/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            produto: novoProduto,
+            valor: novoValor,
+            qtd: novaQtd
+          })
+        });
+        carregarProdutos();
+      }
+    }
+
+    carregarProdutos(); // carrega ao abrir
+  </script>
+</body>
+</html>
