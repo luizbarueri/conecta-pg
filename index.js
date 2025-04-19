@@ -8,7 +8,8 @@ const PORT = 3000;
 app.use(express.json());
 
 // Servir HTML e arquivos estáticos
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join('https://conecta-pg-produtos.vercel.app/', 'public')));
 
 // Conexão com PostgreSQL
 const client = new Client({
@@ -73,5 +74,5 @@ app.delete('/produtos/:id', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Servidor rodando em https://conecta-pg-produtos.vercel.app/:${PORT}`);
 });
