@@ -1,25 +1,8 @@
 {
   "name": "conecta-pg",
   "version": "1.0.0",
-  "description": "conecta a banco de dados supabase postgres",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/luizbarueri/conecta-pg.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/luizbarueri/conecta-pg/issues"
-  },
-  "homepage": "https://github.com/luizbarueri/conecta-pg#readme",
+  "description": "Conecta ao banco de dados Supabase PostgreSQL",
   "dependencies": {
-    "express": "^5.1.0",
     "pg": "^8.14.1"
   }
 }
