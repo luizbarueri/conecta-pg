@@ -2,6 +2,7 @@
   "name": "conecta-pg",
   "version": "1.0.0",
   "description": "Conecta ao banco de dados Supabase PostgreSQL",
+  "scripts": {},
   "dependencies": {
     "pg": "^8.14.1"
   }
